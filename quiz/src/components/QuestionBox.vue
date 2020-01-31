@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 <template>
   <div>
     <b-jumbotron>
@@ -11,7 +10,17 @@
           v-for="(answer, index) of answers"
           :key="index"
           @click="selectAnswer(index)"
-          :class="[selectedIndex === index ? 'selected' : '']"
+          :class="[
+            !answered && selectedIndex === index
+              ? 'selected'
+              : answered && correctIndex === index
+              ? 'correct'
+              : answered &&
+                selectedIndex === index &&
+                correctIndex !== selectedIndex
+              ? 'incorrect'
+              : ''
+          ]"
         >
           {{ answer }}
         </b-list-group-item>
@@ -19,7 +28,7 @@
       <b-button
         variant="primary"
         @click="submitAnswer"
-        :disabled="selectedIndex === null"
+        :disabled="selectedIndex === null || answered === true"
         >Submit</b-button
       >
       <b-button variant="success" @click="next">Next</b-button>
@@ -38,7 +47,8 @@ export default {
     return {
       selectedIndex: null,
       shuffledAnswers: [],
-      correctIndex: null
+      correctIndex: null,
+      answered: false
     };
   },
   watch: {
@@ -46,6 +56,7 @@ export default {
       immediate: true,
       handler() {
         this.selectedIndex = null;
+        this.answered = false;
         this.shuffleAnswers();
       }
     }
@@ -76,6 +87,8 @@ export default {
       if (this.selectedIndex === this.correctIndex) {
         isCorrect = true;
       }
+      this.answered = true;
+
       this.increment(isCorrect);
     }
   }
