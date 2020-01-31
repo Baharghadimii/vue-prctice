@@ -34,9 +34,12 @@ export default {
     };
   },
   watch: {
-    currentQuestion() {
-      this.selectedIndex = null;
-      this.shuffleAnswers();
+    currentQuestion: {
+      immediate: true,
+      handler() {
+        this.selectedIndex = null;
+        this.shuffleAnswers();
+      }
     }
   },
   computed: {
@@ -57,9 +60,6 @@ export default {
       ];
       this.shuffleAnswers = _.shuffle(answers);
     }
-  },
-  mounted() {
-    this.shuffledAnswers();
   }
 };
 </script>
