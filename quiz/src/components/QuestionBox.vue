@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div>
     <b-jumbotron>
@@ -15,7 +16,7 @@
           {{ answer }}
         </b-list-group-item>
       </b-list-group>
-      <b-button variant="primary" href="#">Submit</b-button>
+      <b-button variant="primary" @click="submitAnswer">Submit</b-button>
       <b-button variant="success" @click="next">Next</b-button>
     </b-jumbotron>
   </div>
@@ -25,7 +26,8 @@ import _ from "lodash";
 export default {
   props: {
     currentQuestion: Object,
-    next: Function
+    next: Function,
+    increment: Function
   },
   data() {
     return {
@@ -59,6 +61,13 @@ export default {
         this.currentQuestion.correct_answer
       ];
       this.shuffleAnswers = _.shuffle(answers);
+    },
+    submitAnswer() {
+      let isCorrect = false;
+      if (this.selectedIndex === this.correctIndex) {
+        isCorrect = true;
+      }
+      this.increment(isCorrect);
     }
   }
 };
