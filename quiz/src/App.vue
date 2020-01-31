@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 <template>
   <div id="app">
     <Header />
     <b-container class="bv-example-row">
       <b-row>
-        <QuestionBox />
+        <b-col sm="6" offset="3">
+          <QuestionBox />
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -18,6 +21,22 @@ export default {
   components: {
     QuestionBox,
     Header
+  },
+  data() {
+    return {
+      questions: []
+    };
+  },
+  mounted: function() {
+    fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple", {
+      method: "get"
+    })
+      .then(data => {
+        return data.json();
+      })
+      .then(jsonData => {
+        this.questions = jsonData.result;
+      });
   }
 };
 </script>
