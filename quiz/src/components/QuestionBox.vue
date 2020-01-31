@@ -10,17 +10,7 @@
           v-for="(answer, index) of answers"
           :key="index"
           @click="selectAnswer(index)"
-          :class="[
-            !answered && selectedIndex === index
-              ? 'selected'
-              : answered && correctIndex === index
-              ? 'correct'
-              : answered &&
-                selectedIndex === index &&
-                correctIndex !== selectedIndex
-              ? 'incorrect'
-              : ''
-          ]"
+          :class="answerClass(index)"
         >
           {{ answer }}
         </b-list-group-item>
@@ -90,6 +80,21 @@ export default {
       this.answered = true;
 
       this.increment(isCorrect);
+    },
+    answerClass(index) {
+      if (!this.answered && this.selectedIndex === index) {
+        return "selected";
+      } else if (this.answered && this.correctIndex === index) {
+        return "correct";
+      } else if (
+        this.answered &&
+        this.selectedIndex === index &&
+        this.correctIndex !== index
+      ) {
+        return "incorrect";
+      } else {
+        return "";
+      }
     }
   }
 };
